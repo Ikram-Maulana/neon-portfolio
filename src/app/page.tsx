@@ -1,13 +1,11 @@
-import type { GetStaticProps, NextPage } from "next";
-import Head from "next/head";
-import Image from "next/legacy/image";
+import Experiences from "@/components/Experiences";
+import HorizontalBreak from "@/components/HorizontalBreak";
+import Projects from "@/components/Projects";
+import ScrollToTopWrapper from "@/components/scroll-to-top-wrapper";
+import { getAllExperiences, getAllProjects, getProfile } from "@/utils";
+import { unstable_noStore } from "next/cache";
+import Image from "next/image";
 import Link from "next/link";
-import ScrollToTop from "react-scroll-to-top";
-import Experiences from "../components/Experiences";
-import HorizontalBreak from "../components/HorizontalBreak";
-import Layout, { siteTitle } from "../components/Layout";
-import Projects from "../components/Projects";
-import { getAllExperiences, getAllProjects, getProfile } from "../utils";
 
 interface dataFetchProps {
   profile: {
@@ -51,7 +49,24 @@ interface dataFetchProps {
   };
 }
 
-const Home: NextPage<dataFetchProps> = ({ profile, experiences, projects }) => {
+const Home = async () => {
+  unstable_noStore();
+  const [profile, experiences, projects] = (await Promise.all([
+    getProfile(),
+    getAllExperiences(),
+    getAllProjects(),
+  ])) as [
+    dataFetchProps["profile"],
+    dataFetchProps["experiences"],
+    dataFetchProps["projects"]
+  ];
+
+  if (!profile || !experiences || !projects) {
+    return {
+      notFound: true,
+    };
+  }
+
   const profile_data = profile.data.profile[0];
   const experiences_data = experiences.data.experiences;
   const projects_data = projects.data.projects;
@@ -62,11 +77,7 @@ const Home: NextPage<dataFetchProps> = ({ profile, experiences, projects }) => {
   };
 
   return (
-    <Layout>
-      <Head>
-        <title>{siteTitle}</title>
-      </Head>
-
+    <>
       {/* Hero */}
       <section
         id="hero"
@@ -89,15 +100,18 @@ const Home: NextPage<dataFetchProps> = ({ profile, experiences, projects }) => {
                 className="text-center font-black mb-4 pb-1 bg-clip-text bg-gradient-to-r text-gray-800 dark:text-[#CCD6F6]"
                 style={{ lineHeight: "1.1" }}
               >
-                {profile_data.name}.
+                {profile_data?.name}.
               </h1>
             </div>
             <p className="text-lg sm:text-xl text-center leading-7 sm:leading-8 text-gray-700 dark:text-[#8892B0]">
-              {profile_data.description} 👨‍💻.
+              {profile_data?.description} 👨‍💻.
             </p>
             <div className="flex flex-col items-center justify-center mt-6 sm:flex-row">
               <Link
-                href={socialMediaParser(profile_data.socialMedia[0]).url}
+                href={
+                  socialMediaParser(profile_data?.socialMedia[0] || "").url ??
+                  ""
+                }
                 className="z-1 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-4 text-center mr-2 mb-2 dark:border-[#64D7FF] dark:text-[#64D7FF] dark:hover:text-white dark:hover:bg-[#64D7FF]/10"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -119,7 +133,7 @@ const Home: NextPage<dataFetchProps> = ({ profile, experiences, projects }) => {
             >
               Hello, {"I'm "}
               <span className="text-purple-500 dark:text-[#0EA5E9]">
-                {profile_data.name}
+                {profile_data?.name}
               </span>
               .
             </h2>
@@ -135,7 +149,7 @@ const Home: NextPage<dataFetchProps> = ({ profile, experiences, projects }) => {
             >
               🔎 Main interests in{" "}
               <span className="text-[#0EA5E9]">
-                {profile_data.interest.join(", ").replace(/,(?=[^,]*$)/, " &")}
+                {profile_data?.interest.join(", ").replace(/,(?=[^,]*$)/, " &")}
               </span>
             </p>
             <p
@@ -145,7 +159,7 @@ const Home: NextPage<dataFetchProps> = ({ profile, experiences, projects }) => {
               My preferred weapons of choice 👇
             </p>
             <div className="flex flex-col w-full mt-4 lg:flex-row lg:flex-wrap lg:justify-between">
-              {profile_data.weapon.map((item, index) => (
+              {profile_data?.weapon.map((item, index) => (
                 <div
                   className="flex items-center justify-start py-2 text-lg leading-tight lg:w-2/5"
                   key={index}
@@ -176,7 +190,10 @@ const Home: NextPage<dataFetchProps> = ({ profile, experiences, projects }) => {
             </div>
             <div className="flex flex-col items-center mt-4 sm:flex-row">
               <Link
-                href={socialMediaParser(profile_data.socialMedia[1]).url}
+                href={
+                  socialMediaParser(profile_data?.socialMedia[1] || "").url ??
+                  ""
+                }
                 className="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-[#64D7FF] dark:text-[#64D7FF] dark:hover:text-white dark:hover:bg-[#64D7FF]/10"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -187,12 +204,11 @@ const Home: NextPage<dataFetchProps> = ({ profile, experiences, projects }) => {
           </div>
           <div className="w-full mt-0 mb-10 md:w-2/5 md:mt-0 md:mb-0">
             <Image
-              loader={({ src }) => src}
-              src={profile_data.imageUrl}
-              alt={profile_data.name}
+              src={profile_data?.imageUrl ?? ""}
+              alt={profile_data?.name ?? ""}
               width={1440}
               height={1370}
-              className="object-cover rounded-lg shadow-2xl rb-lazy"
+              className="object-cover rounded-lg shadow-2xl rb-lazy aspect-square"
               unoptimized={true}
             />
             <noscript />
@@ -261,23 +277,9 @@ const Home: NextPage<dataFetchProps> = ({ profile, experiences, projects }) => {
         </div>
       </section>
 
-      <ScrollToTop smooth />
-    </Layout>
+      <ScrollToTopWrapper />
+    </>
   );
-};
-
-export const getStaticProps: GetStaticProps = async () => {
-  const profile = await getProfile();
-  const experiences = await getAllExperiences();
-  const projects = await getAllProjects();
-
-  return {
-    props: {
-      profile,
-      experiences,
-      projects,
-    },
-  };
 };
 
 export default Home;
