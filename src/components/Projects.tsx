@@ -21,7 +21,6 @@ const Projects = ({
   return (
     <>
       <Image
-        loader={({ src }) => src}
         src={imageLink}
         alt={name}
         width={1280}

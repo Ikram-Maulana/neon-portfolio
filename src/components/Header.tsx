@@ -1,3 +1,5 @@
+"use client";
+
 import { Navbar } from "flowbite-react";
 import Image from "next/legacy/image";
 import { useEffect, useRef, useState } from "react";
@@ -5,7 +7,10 @@ import ProgressBar from "react-progressbar-on-scroll";
 import { Link } from "react-scroll/modules";
 
 const Header = () => {
-  const [navBackground, setNavBackground] = useState(["appBarTransparent", "appBarChildSolid"]);
+  const [navBackground, setNavBackground] = useState([
+    "appBarTransparent",
+    "appBarChildSolid",
+  ]);
   const navRef = useRef<string[]>();
   navRef.current = navBackground;
 
@@ -32,7 +37,9 @@ const Header = () => {
         gradientColor="#1DB4D2"
         height={5}
       />
-      <header className={`${navRef.current[0]} ${navRef.current[1]} transition-all`}>
+      <header
+        className={`${navRef.current[0]} ${navRef.current[1]} transition-all`}
+      >
         <Navbar fluid={true} rounded={true}>
           <Link
             activeClass="active"
@@ -41,7 +48,7 @@ const Header = () => {
             smooth={true}
             offset={-100}
             duration={100}
-            className="cursor-pointer flex items-center"
+            className="flex items-center cursor-pointer"
           >
             <Image
               src="/icon-512x512.png"
@@ -61,7 +68,7 @@ const Header = () => {
                 smooth={true}
                 offset={-100}
                 duration={100}
-                className="cursor-pointer block py-2 pr-4 pl-3 md:p-0 border-b border-gray-100  text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-white dark:text-gray-400"
+                className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 cursor-pointer md:p-0 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-white dark:text-gray-400"
               >
                 <span className="num-list">01.</span> Home
               </Link>
@@ -74,7 +81,7 @@ const Header = () => {
                 smooth={true}
                 offset={-100}
                 duration={100}
-                className="cursor-pointer block py-2 pr-4 pl-3 md:p-0 border-b border-gray-100  text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-white dark:text-gray-400"
+                className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 cursor-pointer md:p-0 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-white dark:text-gray-400"
               >
                 <span className="num-list">02.</span> About
               </Link>
@@ -87,7 +94,7 @@ const Header = () => {
                 smooth={true}
                 offset={-100}
                 duration={100}
-                className="cursor-pointer block py-2 pr-4 pl-3 md:p-0 border-b border-gray-100  text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-white dark:text-gray-400"
+                className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 cursor-pointer md:p-0 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-white dark:text-gray-400"
               >
                 <span className="num-list">03.</span> Project
               </Link>
@@ -100,7 +107,7 @@ const Header = () => {
                 smooth={true}
                 offset={-100}
                 duration={100}
-                className="cursor-pointer block py-2 pr-4 pl-3 md:p-0 border-b border-gray-100  text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-white dark:text-gray-400"
+                className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 cursor-pointer md:p-0 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-white dark:text-gray-400"
               >
                 <span className="num-list">04.</span> Experience
               </Link>
