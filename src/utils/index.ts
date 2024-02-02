@@ -1,10 +1,11 @@
 "use server";
 
+import { env } from "@/env";
 import axios from "axios";
 
 export async function getAllExperiences() {
   try {
-    const response = await axios.get(`${process.env.API_URL}/experiences`);
+    const response = await axios.get(`${env.API_URL}/experiences`);
     return response.data;
   } catch (error) {
     console.error("Error fetching experiences: ", error);
@@ -14,7 +15,7 @@ export async function getAllExperiences() {
 
 export async function getAllProjects() {
   try {
-    const response = await axios.get(`${process.env.API_URL}/projects`);
+    const response = await axios.get(`${env.API_URL}/projects`);
     return response.data;
   } catch (error) {
     console.error("Error fetching projects: ", error);
@@ -24,7 +25,7 @@ export async function getAllProjects() {
 
 export async function getProfile() {
   try {
-    const response = await axios.get(`${process.env.API_URL}/profile`);
+    const response = await axios.get(`${env.API_URL}/profile`);
     return response.data;
   } catch (error) {
     console.error("Error fetching profile: ", error);
