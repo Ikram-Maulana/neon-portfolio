@@ -1,8 +1,9 @@
+import FooTer from "@/components/FooTer";
+import Header from "@/components/Header";
+import { env } from "@/env";
+import "@/styles/globals.css";
 import { Metadata } from "next";
 import Script from "next/script";
-import "@/styles/globals.css";
-import Header from "@/components/Header";
-import FooTer from "@/components/FooTer";
 
 export const metadata: Metadata = {
   title: "Ikram Maulana",
@@ -49,9 +50,9 @@ export default function RootLayout({
         <FooTer />
       </body>
       <Script
-        src="https://analytics.ikrammaulana.my.id/script.js"
+        src={env.NEXT_PUBLIC_UMAMI_URL}
         strategy="lazyOnload"
-        data-website-id="1cb44e5a-3b77-4ae1-afde-2b83d57eaaa0"
+        data-website-id={env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
       />
     </html>
   );
