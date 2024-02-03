@@ -7,7 +7,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "version": "auto-changelog -p",
     "lint": "next lint"
+  },
+  "auto-changelog": {
+    "output": "CHANGELOG.md",
+    "template": "keepachangelog",
+    "unreleased": true,
+    "commitLimit": false
   },
   "dependencies": {
     "@t3-oss/env-nextjs": "^0.8.0",
